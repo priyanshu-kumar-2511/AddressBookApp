@@ -56,11 +56,95 @@ This establishes the foundational data structure that future Address Book operat
 
 ---
 
+# 🧩 UC2 – Add Contact to Address Book
+
+## Description
+
+UC2 introduces the functionality to **add a new contact to the Address Book** using a REST API.
+
+The system accepts contact details in **JSON format**, converts them into a `Contact` object, and stores them in an in-memory list.
+
+This enables the application to begin managing Address Book entries dynamically.
+
+---
+
+## Purpose
+
+* To allow users to **add contacts to the Address Book**.
+* To expose a **REST endpoint** for creating new contact entries.
+* To store contact information temporarily using an in-memory data structure.
+
+---
+
+## Implementation
+
+* Implemented a **POST API** to add new contacts.
+* Implemented a **GET API** to retrieve all stored contacts.
+* Used `@RequestBody` to map incoming JSON data to the `Contact` model.
+* Contacts are stored in an **ArrayList inside the controller**.
+
+---
+
+## APIs Implemented
+
+### Add Contact
+
+```
+POST /addressbook/add
+```
+
+Example Request Body
+
+```json id="uc2_json"
+{
+  "id": 1,
+  "firstName": "Priyanshu",
+  "lastName": "Kumar",
+  "address": "Kanpur",
+  "city": "Kanpur",
+  "state": "UP",
+  "zip": "208001",
+  "phoneNumber": "9876543210",
+  "email": "priyanshu@gmail.com"
+}
+```
+
+Response
+
+```
+Contact added successfully
+```
+
+---
+
+### Get All Contacts
+
+```
+GET /addressbook/contacts
+```
+
+Example Response
+
+```json id="uc2_response"
+[
+ {
+  "id": 1,
+  "firstName": "Priyanshu",
+  "lastName": "Kumar",
+  "address": "Kanpur",
+  "city": "Kanpur",
+  "state": "UP",
+  "zip": "208001",
+  "phoneNumber": "9876543210",
+  "email": "priyanshu@gmail.com"
+ }
+]
+```
+
 # 🧩 Upcoming Use Cases
 
 The following features will be implemented progressively:
 
-* **UC2 – Add Contact to Address Book**
 * **UC3 – Edit Existing Contact**
 * **UC4 – Delete Contact**
 * **UC5 – Prevent Duplicate Entries**
