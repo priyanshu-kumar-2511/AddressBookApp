@@ -337,16 +337,104 @@ All operations currently use **in-memory storage (ArrayList)**.
 
 ---
 
-# Next Use Case
+# 🧩 UC5 – Add Multiple Contacts to Address Book
 
-**UC5 – Prevent Duplicate Contact Entries**
+## Description
 
+UC5 introduces the ability to **add multiple contacts to the Address Book** and manage them using a **Collection class**.
+
+The application now supports storing several contact records simultaneously. Each contact is represented as a `Contact` object and stored in an in-memory **ArrayList**.
+
+Users can add contacts **one by one** or **multiple contacts at once** through REST APIs.
+
+---
+
+## Purpose
+
+* To store and manage **multiple contact entries** in the Address Book.
+* To utilize Java **Collection classes** for handling multiple records.
+* To provide an API that allows adding **multiple contacts in a single request**.
+
+---
+
+## Implementation
+
+* Used **ArrayList<Contact>** to store multiple contacts.
+* Implemented an API that accepts a **list of Contact objects**.
+* The application processes the list and stores all contacts in the Address Book collection.
+
+Contacts are still stored **in memory**.
+
+---
+
+# 🌐 API Implemented
+
+### Add Multiple Contacts
+
+```id="uc5_api"
+POST /addressbook/addMultiple
+```
+
+Example Request
+
+```id="uc5_url"
+http://localhost:8080/addressbook/addMultiple
+```
+
+---
+
+# 🧪 Testing Using Terminal (curl)
+
+The API was tested using the **curl command from the terminal**.
+
+```id="curl_uc5"
+curl -X POST http://localhost:8080/addressbook/addMultiple -H "Content-Type: application/json" -d "[{\"id\":2,\"firstName\":\"Rahul\",\"lastName\":\"Sharma\",\"address\":\"Delhi\",\"city\":\"Delhi\",\"state\":\"Delhi\",\"zip\":\"110001\",\"phoneNumber\":\"9999999999\",\"email\":\"rahul@gmail.com\"},{\"id\":3,\"firstName\":\"Anita\",\"lastName\":\"Verma\",\"address\":\"Lucknow\",\"city\":\"Lucknow\",\"state\":\"UP\",\"zip\":\"226001\",\"phoneNumber\":\"8888888888\",\"email\":\"anita@gmail.com\"}]"
+```
+
+Response
+
+```id="uc5_response"
+Multiple contacts added successfully
+```
+
+---
+
+# Verification
+
+To verify that the contacts have been stored:
+
+```id="verify_uc5"
+GET /addressbook/contacts
+```
+
+Terminal command:
+
+```id="verify_uc5_curl"
+curl http://localhost:8080/addressbook/contacts
+```
+
+This will return all contacts currently stored in the Address Book.
+
+---
+
+# Outcome
+
+With UC5 implemented, the Address Book application now supports:
+
+* Adding contacts
+* Adding multiple contacts
+* Viewing contacts
+* Editing contacts
+* Deleting contacts
+
+All contacts are currently stored using a **Java Collection (ArrayList)**.
+
+---
 
 # 🧩 Upcoming Use Cases
 
 The following features will be implemented progressively:
 
-* **UC5 – Prevent Duplicate Entries**
 * **UC6 – Multiple Address Books**
 * **UC7 – Search Person by City or State**
 * **UC8 – View Persons by City or State**

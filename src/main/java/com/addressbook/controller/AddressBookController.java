@@ -25,6 +25,14 @@ public class AddressBookController {
 
         return "Contact added successfully";
     }
+    
+    // UC5 - Add Multiple Contacts
+    
+    @PostMapping("/addMultiple")
+    public String addMultipleContacts(@RequestBody List<Contact> contacts) {
+        contactList.addAll(contacts);
+        return "Multiple contacts added successfully";
+    }
 
     @GetMapping("/contacts")
     public List<Contact> getAllContacts() {
