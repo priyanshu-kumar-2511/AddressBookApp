@@ -810,11 +810,146 @@ With UC8 implemented, the Address Book application now supports:
 
 ---
 
+# 🧩 UC9 – View Persons by City or State
+
+## Description
+
+UC9 introduces the ability to **view persons grouped by city or state** in the Address Book system.
+
+The system maintains a **dictionary (Map)** that maps **city → persons** and **state → persons**.
+This allows users to quickly retrieve all contacts belonging to a particular city or state.
+
+This feature improves the efficiency of searching and organizing contacts based on location.
+
+---
+
+## Purpose
+
+* To allow users to **view contacts grouped by city or state**.
+* To maintain a **dictionary structure using Java Collections**.
+* To organize contacts in a way that enables **fast retrieval by location**.
+
+---
+
+## Implementation
+
+* Implemented **two dictionaries using Map collections**:
+
+```
+Map<String, List<Contact>> cityDictionary
+Map<String, List<Contact>> stateDictionary
+```
+
+* The **key** represents the city or state.
+* The **value** represents the list of contacts belonging to that city or state.
+
+Whenever a contact is added to an Address Book:
+
+* The contact is added to the **Address Book list**
+* The contact is also indexed inside the **city and state dictionaries**
+
+Example structure:
+
+```
+City Dictionary
+
+Delhi   → [Rahul, Amit]
+Kanpur  → [Priyanshu]
+
+State Dictionary
+
+Delhi → [Rahul, Amit]
+UP    → [Priyanshu]
+```
+
+---
+
+# 🌐 APIs Implemented
+
+### View Persons by City
+
+```
+GET /addressbook/view/city/{city}
+```
+
+Example
+
+```
+GET http://localhost:8080/addressbook/view/city/Delhi
+```
+
+---
+
+### View Persons by State
+
+```
+GET /addressbook/view/state/{state}
+```
+
+Example
+
+```
+GET http://localhost:8080/addressbook/view/state/UP
+```
+
+---
+
+# 🧪 Testing Using Terminal (curl)
+
+View persons by city:
+
+```
+curl http://localhost:8080/addressbook/view/city/Delhi
+```
+
+View persons by state:
+
+```
+curl http://localhost:8080/addressbook/view/state/UP
+```
+
+Example Response
+
+```json
+[
+ {
+  "id": 2,
+  "firstName": "Rahul",
+  "lastName": "Sharma",
+  "city": "Delhi",
+  "state": "Delhi"
+ },
+ {
+  "id": 3,
+  "firstName": "Amit",
+  "lastName": "Verma",
+  "city": "Delhi",
+  "state": "Delhi"
+ }
+]
+```
+
+---
+
+# Outcome
+
+With UC9 implemented, the Address Book application now supports:
+
+* Creating contacts
+* Adding contacts
+* Adding multiple contacts
+* Managing multiple Address Books
+* Editing contacts
+* Deleting contacts
+* Preventing duplicate entries
+* Searching contacts by city or state
+* **Viewing persons grouped by city or state**
+
+
 # 🧩 Upcoming Use Cases
 
 The following features will be implemented progressively:
 
-* **UC9 – View Persons by City or State**
 * **UC10 – Count Contacts by City or State**
 * **UC11 – Sort Contacts Alphabetically**
 * **UC12 – Sort Contacts by City, State, or Zip**

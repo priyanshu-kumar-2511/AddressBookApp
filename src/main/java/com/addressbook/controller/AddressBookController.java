@@ -13,6 +13,10 @@ public class AddressBookController {
     // Map<AddressBookName , List<Contact>>
     private Map<String, List<Contact>> addressBooks = new HashMap<>();
 
+    // UC9 - Dictionaries
+    private Map<String, List<Contact>> cityDictionary = new HashMap<>();
+    private Map<String, List<Contact>> stateDictionary = new HashMap<>();
+
 
     @GetMapping("/")
     public String addressBookApp() {
@@ -20,7 +24,7 @@ public class AddressBookController {
     }
 
 
-    // UC6 - Create new Address Book
+    // UC6 - Create Address Book
     @PostMapping("/create/{bookName}")
     public String createAddressBook(@PathVariable String bookName) {
 
@@ -33,7 +37,7 @@ public class AddressBookController {
     }
 
 
-    // UC2 + UC7 - Add Contact with Duplicate Check
+    // UC2 + UC7 - Add Contact
     @PostMapping("/{bookName}/add")
     public String addContact(@PathVariable String bookName, @RequestBody Contact contact) {
 
@@ -51,6 +55,16 @@ public class AddressBookController {
         }
 
         contactList.add(contact);
+
+        // UC9 - Update dictionaries
+        cityDictionary
+                .computeIfAbsent(contact.getCity(), k -> new ArrayList<>())
+                .add(contact);
+
+        stateDictionary
+                .computeIfAbsent(contact.getState(), k -> new ArrayList<>())
+                .add(contact);
+
         return "Contact added successfully to " + bookName;
     }
 
@@ -65,7 +79,20 @@ public class AddressBookController {
             return "Address Book not found";
         }
 
-        contactList.addAll(contacts);
+        for (Contact contact : contacts) {
+
+            contactList.add(contact);
+
+            // update dictionaries
+            cityDictionary
+                    .computeIfAbsent(contact.getCity(), k -> new ArrayList<>())
+                    .add(contact);
+
+            stateDictionary
+                    .computeIfAbsent(contact.getState(), k -> new ArrayList<>())
+                    .add(contact);
+        }
+
         return "Multiple contacts added successfully to " + bookName;
     }
 
@@ -74,19 +101,15 @@ public class AddressBookController {
     @GetMapping("/{bookName}/contacts")
     public List<Contact> getAllContacts(@PathVariable String bookName) {
 
-        List<Contact> contactList = addressBooks.get(bookName);
-
-        if (contactList == null) {
-            return new ArrayList<>();
-        }
-
-        return contactList;
+        return addressBooks.getOrDefault(bookName, new ArrayList<>());
     }
 
 
-    // UC3 - Edit contact using first name
+    // UC3 - Edit Contact
     @PutMapping("/{bookName}/edit/{firstName}")
-    public String editContact(@PathVariable String bookName, @PathVariable String firstName, @RequestBody Contact updatedContact) {
+    public String editContact(@PathVariable String bookName,
+                              @PathVariable String firstName,
+                              @RequestBody Contact updatedContact) {
 
         List<Contact> contactList = addressBooks.get(bookName);
 
@@ -95,6 +118,7 @@ public class AddressBookController {
         }
 
         for (Contact contact : contactList) {
+
             if (contact.getFirstName().equalsIgnoreCase(firstName)) {
 
                 contact.setLastName(updatedContact.getLastName());
@@ -115,7 +139,8 @@ public class AddressBookController {
 
     // UC4 - Delete Contact
     @DeleteMapping("/{bookName}/delete/{firstName}")
-    public String deleteContact(@PathVariable String bookName, @PathVariable String firstName) {
+    public String deleteContact(@PathVariable String bookName,
+                                @PathVariable String firstName) {
 
         List<Contact> contactList = addressBooks.get(bookName);
 
@@ -127,15 +152,11 @@ public class AddressBookController {
                 c -> c.getFirstName().equalsIgnoreCase(firstName)
         );
 
-        if (removed) {
-            return "Contact deleted successfully";
-        }
-
-        return "Contact not found";
+        return removed ? "Contact deleted successfully" : "Contact not found";
     }
 
 
-    // UC8 - Search by City across all Address Books
+    // UC8 - Search by City
     @GetMapping("/search/city/{city}")
     public List<Contact> searchByCity(@PathVariable String city) {
 
@@ -147,7 +168,7 @@ public class AddressBookController {
     }
 
 
-    // UC8 - Search by State across all Address Books
+    // UC8 - Search by State
     @GetMapping("/search/state/{state}")
     public List<Contact> searchByState(@PathVariable String state) {
 
@@ -156,5 +177,21 @@ public class AddressBookController {
                 .flatMap(List::stream)
                 .filter(contact -> contact.getState().equalsIgnoreCase(state))
                 .toList();
+    }
+
+
+    // UC9 - View Persons by City
+    @GetMapping("/view/city/{city}")
+    public List<Contact> viewPersonsByCity(@PathVariable String city) {
+
+        return cityDictionary.getOrDefault(city, new ArrayList<>());
+    }
+
+
+    // UC9 - View Persons by State
+    @GetMapping("/view/state/{state}")
+    public List<Contact> viewPersonsByState(@PathVariable String state) {
+
+        return stateDictionary.getOrDefault(state, new ArrayList<>());
     }
 }
