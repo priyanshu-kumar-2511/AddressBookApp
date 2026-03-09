@@ -685,29 +685,152 @@ Duplicate validation ensures that the Address Book maintains **unique contact re
 
 ---
 
+# 🧩 UC8 – Search Person by City or State
+
+## Description
+
+UC8 introduces the ability to **search for contacts by city or state across multiple Address Books**.
+
+The system scans all Address Books and returns a list of contacts whose **city or state matches the search criteria**. The search result may include **multiple contacts from different Address Books**.
+
+---
+
+## Purpose
+
+* To allow users to **search contacts across all Address Books**.
+* To retrieve contacts belonging to a specific **city or state**.
+* To efficiently filter contacts using **Java Streams**.
+
+---
+
+## Implementation
+
+* Implemented search functionality across all Address Books.
+* Used **Java Streams** to flatten and filter contacts stored in the `Map<String, List<Contact>>`.
+* The search operation iterates through all Address Books and returns matching contacts.
+
+Example logic:
+
+```java id="uc8_stream_example"
+addressBooks.values()
+        .stream()
+        .flatMap(List::stream)
+        .filter(contact -> contact.getCity().equalsIgnoreCase(city))
+        .toList();
+```
+
+This stream:
+
+1. Retrieves all Address Book contact lists
+2. Flattens them into a single stream of contacts
+3. Filters contacts by city or state
+4. Returns the matching contacts
+
+---
+
+# 🌐 APIs Implemented
+
+### Search by City
+
+```id="uc8_api_city"
+GET /addressbook/search/city/{city}
+```
+
+Example
+
+```id="uc8_example_city"
+GET /addressbook/search/city/Delhi
+```
+
+---
+
+### Search by State
+
+```id="uc8_api_state"
+GET /addressbook/search/state/{state}
+```
+
+Example
+
+```id="uc8_example_state"
+GET /addressbook/search/state/UP
+```
+
+---
+
+# 🧪 Testing Using Terminal (curl)
+
+Search by city:
+
+```id="uc8_curl_city"
+curl http://localhost:8080/addressbook/search/city/Delhi
+```
+
+Search by state:
+
+```id="uc8_curl_state"
+curl http://localhost:8080/addressbook/search/state/UP
+```
+
+Example Response
+
+```json id="uc8_response"
+[
+ {
+  "id": 1,
+  "firstName": "Rahul",
+  "lastName": "Sharma",
+  "city": "Delhi",
+  "state": "Delhi"
+ },
+ {
+  "id": 3,
+  "firstName": "Sakshi",
+  "lastName": "Kumari",
+  "city": "Delhi",
+  "state": "Delhi"
+ }
+]
+```
+
+---
+
+# Outcome
+
+With UC8 implemented, the Address Book application now supports:
+
+* Creating contacts
+* Adding contacts
+* Adding multiple contacts
+* Managing multiple Address Books
+* Editing contacts
+* Deleting contacts
+* Preventing duplicate entries
+* **Searching contacts by city or state across multiple Address Books**
+
+---
+
 # 🧩 Upcoming Use Cases
 
 The following features will be implemented progressively:
 
-* **UC7 – Search Person by City or State**
-* **UC8 – View Persons by City or State**
-* **UC9 – Count Contacts by City or State**
-* **UC10 – Sort Contacts Alphabetically**
-* **UC11 – Sort Contacts by City, State, or Zip**
-* **UC12 – Write Address Book to File**
-* **UC13 – Read Address Book from File**
-* **UC14 – Count Contacts in File**
-* **UC15 – Write Contacts to CSV File**
-* **UC16 – Read Contacts from CSV File**
-* **UC17 – Write Contacts to JSON File**
-* **UC18 – Read Contacts from JSON File**
-* **UC19 – Add Contacts Using Threads**
-* **UC20 – Measure Time for Threaded Contact Addition**
-* **UC21 – Add Multiple Contacts Using Thread Pools**
-* **UC22 – Measure Thread Pool Performance**
-* **UC23 – Store Address Book in Database**
-* **UC24 – Retrieve Contacts from Database**
-* **UC25 – Update Contact in Database**
+* **UC9 – View Persons by City or State**
+* **UC10 – Count Contacts by City or State**
+* **UC11 – Sort Contacts Alphabetically**
+* **UC12 – Sort Contacts by City, State, or Zip**
+* **UC13 – Write Address Book to File**
+* **UC14 – Read Address Book from File**
+* **UC15 – Count Contacts in File**
+* **UC16 – Write Contacts to CSV File**
+* **UC17 – Read Contacts from CSV File**
+* **UC18 – Write Contacts to JSON File**
+* **UC19 – Read Contacts from JSON File**
+* **UC20 – Add Contacts Using Threads**
+* **UC21 – Measure Time for Threaded Contact Addition**
+* **UC22 – Add Multiple Contacts Using Thread Pools**
+* **UC23 – Measure Thread Pool Performance**
+* **UC24 – Store Address Book in Database**
+* **UC25 – Retrieve Contacts from Database**
 
 ---
 

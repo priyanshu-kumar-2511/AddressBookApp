@@ -123,12 +123,38 @@ public class AddressBookController {
             return "Address Book not found";
         }
 
-        boolean removed = contactList.removeIf(c -> c.getFirstName().equalsIgnoreCase(firstName));
+        boolean removed = contactList.removeIf(
+                c -> c.getFirstName().equalsIgnoreCase(firstName)
+        );
 
         if (removed) {
             return "Contact deleted successfully";
         }
 
         return "Contact not found";
+    }
+
+
+    // UC8 - Search by City across all Address Books
+    @GetMapping("/search/city/{city}")
+    public List<Contact> searchByCity(@PathVariable String city) {
+
+        return addressBooks.values()
+                .stream()
+                .flatMap(List::stream)
+                .filter(contact -> contact.getCity().equalsIgnoreCase(city))
+                .toList();
+    }
+
+
+    // UC8 - Search by State across all Address Books
+    @GetMapping("/search/state/{state}")
+    public List<Contact> searchByState(@PathVariable String state) {
+
+        return addressBooks.values()
+                .stream()
+                .flatMap(List::stream)
+                .filter(contact -> contact.getState().equalsIgnoreCase(state))
+                .toList();
     }
 }
