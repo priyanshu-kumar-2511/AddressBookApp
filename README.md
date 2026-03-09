@@ -431,11 +431,160 @@ All contacts are currently stored using a **Java Collection (ArrayList)**.
 
 ---
 
+# 🧩 UC6 – Multiple Address Books
+
+## Description
+
+UC6 introduces the ability to **maintain multiple Address Books within the system**.
+
+Each Address Book is identified by a **unique name**, and each Address Book can contain multiple contacts.
+
+This refactor extends the system from managing a single Address Book to managing **multiple collections of contacts**, allowing users to organize contacts into categories such as **Friends, Family, or Office**.
+
+---
+
+## Purpose
+
+* To allow the system to manage **multiple Address Books**.
+* To uniquely identify each Address Book using a **name**.
+* To organize contacts into separate groups.
+* To improve scalability of the Address Book system.
+
+---
+
+## Implementation
+
+* Refactored the application to use a **Dictionary structure (`Map<String, List<Contact>>`)**.
+* The **key** represents the Address Book name.
+* The **value** represents the list of contacts belonging to that Address Book.
+
+Example structure:
+
+```
+Friends  → [Contact1, Contact2]
+Family   → [Contact3, Contact4]
+Office   → [Contact5]
+```
+
+This allows the system to maintain **multiple independent Address Books**.
+
+---
+
+# 🌐 APIs Implemented
+
+### Create Address Book
+
+```
+POST /addressbook/create/{bookName}
+```
+
+Example
+
+```
+POST /addressbook/create/Friends
+```
+
+Response
+
+```
+Address Book created successfully
+```
+
+---
+
+### Add Contact to Address Book
+
+```
+POST /addressbook/{bookName}/add
+```
+
+Example
+
+```
+POST /addressbook/Friends/add
+```
+
+---
+
+### Add Multiple Contacts
+
+```
+POST /addressbook/{bookName}/addMultiple
+```
+
+---
+
+### View Contacts of Address Book
+
+```
+GET /addressbook/{bookName}/contacts
+```
+
+Example
+
+```
+GET /addressbook/Friends/contacts
+```
+
+---
+
+### Edit Contact
+
+```
+PUT /addressbook/{bookName}/edit/{firstName}
+```
+
+---
+
+### Delete Contact
+
+```
+DELETE /addressbook/{bookName}/delete/{firstName}
+```
+
+---
+
+# 🧪 Testing Using Terminal (curl)
+
+Create Address Book
+
+```
+curl -X POST http://localhost:8080/addressbook/create/Friends
+```
+
+Add Contact
+
+```
+curl -X POST http://localhost:8080/addressbook/Friends/add -H "Content-Type: application/json" -d "{\"id\":1,\"firstName\":\"Rahul\",\"lastName\":\"Sharma\"}"
+```
+
+View Contacts
+
+```
+curl http://localhost:8080/addressbook/Friends/contacts
+```
+
+---
+
+# Outcome
+
+With UC6 implemented, the Address Book application now supports:
+
+* Multiple Address Books
+* Adding contacts to specific Address Books
+* Adding multiple contacts
+* Viewing contacts by Address Book
+* Editing contacts
+* Deleting contacts
+
+The system now uses a **Dictionary (Map) structure** to manage multiple Address Books efficiently.
+
+---
+
 # 🧩 Upcoming Use Cases
 
 The following features will be implemented progressively:
 
-* **UC6 – Multiple Address Books**
 * **UC7 – Search Person by City or State**
 * **UC8 – View Persons by City or State**
 * **UC9 – Count Contacts by City or State**
