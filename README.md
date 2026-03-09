@@ -140,12 +140,107 @@ Example Response
  }
 ]
 ```
+# 🧩 UC3 – Edit Existing Contact
+
+## Description
+
+UC3 introduces the ability to **edit an existing contact in the Address Book using their name**.
+
+This feature allows users to update contact information such as address, city, state, phone number, and email after the contact has already been added.
+
+The system searches for the contact using the **first name** and updates the corresponding fields with the new values provided.
+
+---
+
+## Purpose
+
+* To allow modification of contact details already stored in the Address Book.
+* To provide an API endpoint for updating contact information.
+* To ensure that users can maintain accurate and up-to-date contact records.
+
+---
+
+## Implementation
+
+* Implemented a **PUT API** to update an existing contact.
+* The application searches the contact list using the **first name**.
+* If a matching contact is found, the existing fields are updated with the new values provided in the request body.
+* If the contact is not found, the system returns a **Contact not found** message.
+
+Contacts are still stored **in memory using an ArrayList**.
+
+---
+
+## API Implemented
+
+### Edit Contact
+
+```
+PUT /addressbook/edit/{firstName}
+```
+
+Example Request
+
+```
+PUT http://localhost:8080/addressbook/edit/Priyanshu
+```
+
+Request Body
+
+```json
+{
+ "id": 1,
+ "firstName": "Priyanshu",
+ "lastName": "Kumar",
+ "address": "Bhopal",
+ "city": "Bhopal",
+ "state": "Madhya Pradesh",
+ "zip": "462022",
+ "phoneNumber": "6207394439",
+ "email": "priyanshu@gmail.com"
+}
+```
+
+Response
+
+```
+Contact updated successfully
+```
+
+---
+
+## Verification
+
+To verify the updated contact, use the GET API:
+
+```
+GET /addressbook/contacts
+```
+
+Example terminal command:
+
+```
+curl http://localhost:8080/addressbook/contacts
+```
+
+The response will display the updated contact information.
+
+---
+
+## Outcome
+
+With UC3 implemented, the Address Book application now supports:
+
+* Creating contact records
+* Storing contacts in memory
+* Editing existing contact details
+
+This prepares the system for the next feature: **UC4 – Delete Contact**.
 
 # 🧩 Upcoming Use Cases
 
 The following features will be implemented progressively:
 
-* **UC3 – Edit Existing Contact**
 * **UC4 – Delete Contact**
 * **UC5 – Prevent Duplicate Entries**
 * **UC6 – Multiple Address Books**

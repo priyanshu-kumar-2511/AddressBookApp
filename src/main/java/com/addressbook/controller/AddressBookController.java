@@ -31,4 +31,27 @@ public class AddressBookController {
 
         return contactList;
     }
+    
+    // UC3 - Edit contact using first name
+    
+    @PutMapping("/edit/{firstName}")
+    public String editContact(@PathVariable String firstName, @RequestBody Contact updatedContact) {
+
+        for (Contact contact : contactList) {
+            if (contact.getFirstName().equalsIgnoreCase(firstName)) {
+
+                contact.setLastName(updatedContact.getLastName());
+                contact.setAddress(updatedContact.getAddress());
+                contact.setCity(updatedContact.getCity());
+                contact.setState(updatedContact.getState());
+                contact.setZip(updatedContact.getZip());
+                contact.setPhoneNumber(updatedContact.getPhoneNumber());
+                contact.setEmail(updatedContact.getEmail());
+
+                return "Contact updated successfully";
+            }
+        }
+
+        return "Contact not found";
+    }
 }

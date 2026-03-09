@@ -2,7 +2,7 @@ package com.addressbook.model;
 
 public class Contact {
 
-    private int id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String address;
@@ -15,7 +15,7 @@ public class Contact {
     public Contact() {
     }
 
-    public Contact(int id, String firstName, String lastName, String address,
+    public Contact(Integer id, String firstName, String lastName, String address,
                    String city, String state, String zip,
                    String phoneNumber, String email) {
 
@@ -34,7 +34,7 @@ public class Contact {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
