@@ -581,6 +581,110 @@ The system now uses a **Dictionary (Map) structure** to manage multiple Address 
 
 ---
 
+# 🧩 UC7 – Prevent Duplicate Contact Entries
+
+## Description
+
+UC7 introduces the ability to **prevent duplicate entries of the same person in an Address Book**.
+
+When a new contact is added to an Address Book, the system checks whether a contact with the **same name already exists** in that Address Book.
+
+If a duplicate contact is detected, the system **rejects the request** and prevents the duplicate entry from being stored.
+
+---
+
+## Purpose
+
+* To maintain **data consistency** in the Address Book.
+* To ensure that the same person is not added multiple times in a single Address Book.
+* To enforce **duplicate validation while adding contacts**.
+
+---
+
+## Implementation
+
+* Implemented duplicate validation while adding a contact.
+* Used **Java Streams** to search the collection for an existing contact.
+* The system compares contacts based on **first name**.
+* If a matching contact already exists, the contact is **not added**.
+
+Example duplicate check logic:
+
+```java id="uc7_stream_logic"
+boolean duplicate = contactList.stream()
+        .anyMatch(c -> c.getFirstName().equalsIgnoreCase(contact.getFirstName()));
+```
+
+If `duplicate == true`, the system returns:
+
+```text id="duplicate_response"
+Duplicate contact found. Contact already exists.
+```
+
+---
+
+# 🌐 API Used
+
+### Add Contact
+
+```text id="uc7_api"
+POST /addressbook/{bookName}/add
+```
+
+Example
+
+```text id="uc7_url"
+POST /addressbook/Friends/add
+```
+
+---
+
+# 🧪 Testing Using Terminal (curl)
+
+Add a contact:
+
+```id="uc7_curl_add"
+curl -X POST http://localhost:8080/addressbook/Friends/add -H "Content-Type: application/json" -d "{\"id\":1,\"firstName\":\"Rahul\",\"lastName\":\"Sharma\"}"
+```
+
+Response
+
+```id="uc7_success"
+Contact added successfully to Friends
+```
+
+---
+
+### Attempt Duplicate Entry
+
+```id="uc7_duplicate_test"
+curl -X POST http://localhost:8080/addressbook/Friends/add -H "Content-Type: application/json" -d "{\"id\":2,\"firstName\":\"Rahul\",\"lastName\":\"Sharma\"}"
+```
+
+Response
+
+```id="uc7_duplicate_response"
+Duplicate contact found. Contact already exists.
+```
+
+---
+
+# Outcome
+
+With UC7 implemented, the Address Book application now supports:
+
+* Creating contacts
+* Adding contacts
+* Adding multiple contacts
+* Managing multiple Address Books
+* Editing contacts
+* Deleting contacts
+* **Preventing duplicate contact entries**
+
+Duplicate validation ensures that the Address Book maintains **unique contact records within each Address Book**.
+
+---
+
 # 🧩 Upcoming Use Cases
 
 The following features will be implemented progressively:

@@ -33,7 +33,7 @@ public class AddressBookController {
     }
 
 
-    // UC2 - Add Contact
+    // UC2 + UC7 - Add Contact with Duplicate Check
     @PostMapping("/{bookName}/add")
     public String addContact(@PathVariable String bookName, @RequestBody Contact contact) {
 
@@ -41,6 +41,13 @@ public class AddressBookController {
 
         if (contactList == null) {
             return "Address Book not found";
+        }
+
+        boolean duplicate = contactList.stream()
+                .anyMatch(c -> c.getFirstName().equalsIgnoreCase(contact.getFirstName()));
+
+        if (duplicate) {
+            return "Duplicate contact found. Contact already exists.";
         }
 
         contactList.add(contact);
@@ -67,7 +74,13 @@ public class AddressBookController {
     @GetMapping("/{bookName}/contacts")
     public List<Contact> getAllContacts(@PathVariable String bookName) {
 
-        return addressBooks.getOrDefault(bookName, new ArrayList<>());
+        List<Contact> contactList = addressBooks.get(bookName);
+
+        if (contactList == null) {
+            return new ArrayList<>();
+        }
+
+        return contactList;
     }
 
 
@@ -110,11 +123,10 @@ public class AddressBookController {
             return "Address Book not found";
         }
 
-        for (Contact contact : contactList) {
-            if (contact.getFirstName().equalsIgnoreCase(firstName)) {
-                contactList.remove(contact);
-                return "Contact deleted successfully";
-            }
+        boolean removed = contactList.removeIf(c -> c.getFirstName().equalsIgnoreCase(firstName));
+
+        if (removed) {
+            return "Contact deleted successfully";
         }
 
         return "Contact not found";
