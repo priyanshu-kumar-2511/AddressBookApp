@@ -237,11 +237,115 @@ With UC3 implemented, the Address Book application now supports:
 
 This prepares the system for the next feature: **UC4 – Delete Contact**.
 
+# 🧩 UC4 – Delete Contact
+
+## Description
+
+UC4 introduces the ability to **delete an existing contact from the Address Book using the person's name**.
+
+This feature allows users to remove a contact record that is no longer required.
+
+The system searches the stored contact list using the **first name** and removes the corresponding contact if it exists.
+
+---
+
+## Purpose
+
+* To allow users to **remove contacts from the Address Book**.
+* To provide an API endpoint for deleting existing contact records.
+* To maintain accurate and updated contact information.
+
+---
+
+## Implementation
+
+* Implemented a **DELETE API** to remove a contact.
+* The application searches the contact list using the **first name**.
+* If a matching contact is found, it is removed from the list.
+* If the contact does not exist, the system returns **Contact not found**.
+
+Contacts are still stored **in memory using an ArrayList**.
+
+---
+
+# 🌐 API Implemented
+
+### Delete Contact
+
+```id="uc4_api"
+DELETE /addressbook/delete/{firstName}
+```
+
+Example Request
+
+```id="uc4_url"
+http://localhost:8080/addressbook/delete/Sakshi
+```
+
+Expected Response
+
+```id="uc4_response"
+Contact deleted successfully
+```
+
+---
+
+# 🧪 Testing Using Terminal (curl)
+
+The API was tested using the **curl command from the terminal**.
+
+```id="curl_delete"
+curl -X DELETE http://localhost:8080/addressbook/delete/Sakshi
+```
+
+Response
+
+```id="curl_delete_response"
+Contact deleted successfully
+```
+
+---
+
+# Verification
+
+To confirm the contact has been removed:
+
+```id="verify_delete"
+GET /addressbook/contacts
+```
+
+Terminal command:
+
+```id="verify_delete_curl"
+curl http://localhost:8080/addressbook/contacts
+```
+
+The deleted contact will **no longer appear in the contact list**.
+
+---
+
+# Outcome
+
+With UC4 implemented, the Address Book application now supports:
+
+* Adding contacts
+* Viewing contacts
+* Editing contacts
+* Deleting contacts
+
+All operations currently use **in-memory storage (ArrayList)**.
+
+---
+
+# Next Use Case
+
+**UC5 – Prevent Duplicate Contact Entries**
+
+
 # 🧩 Upcoming Use Cases
 
 The following features will be implemented progressively:
 
-* **UC4 – Delete Contact**
 * **UC5 – Prevent Duplicate Entries**
 * **UC6 – Multiple Address Books**
 * **UC7 – Search Person by City or State**

@@ -54,4 +54,19 @@ public class AddressBookController {
 
         return "Contact not found";
     }
+    
+    // UC4 - Delete Contact using first name
+    
+    @DeleteMapping("/delete/{firstName}")
+    public String deleteContact(@PathVariable String firstName) {
+
+        for (Contact contact : contactList) {
+            if (contact.getFirstName().equalsIgnoreCase(firstName)) {
+                contactList.remove(contact);
+                return "Contact deleted successfully";
+            }
+        }
+
+        return "Contact not found";
+    }
 }
